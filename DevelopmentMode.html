@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="GraphCreator.js"></script>
+	<script type="text/javascript" src="Renderer.js"></script>
+	<script type="text/javascript" src="PlayerStructure.js"></script>
+	<script type="text/javascript" src="WebDataStructure.js"></script>
+	<script type="text/javascript" src="Spiders.js"></script>
+	<script type="text/javascript" src="Observers/ScoreboardObserver.js"></script>
+	<script type="text/javascript" src="Observers/UIObserver.js"></script>
+	<script type="text/javascript" src="Observers/PlayerTurnObserver.js"></script>
+</head>
+
+<body>
+	<canvas id="canvas" width="600" height="600" style="border:3px solid #000000;float:left;">
+	</canvas>
+	<div id="scoreboard" style="float:left;position:relative;"></div>
+
+	
+	<script type="text/javascript">
+
+      var canvas = document.getElementById("canvas"),
+          ctx = canvas.getContext("2d");
+      var scoreboard = document.getElementById("scoreboard");
+                  
+		var playerNames = ["uno", "dos", "tres", "cuatro"];
+		var players = [];
+		for( var i = 0; i < playerNames.length; i++ ) {
+			players.push( new Player( playerNames[i] ) );
+		}
+		var cmap = {"none":"#777777",
+						"uno":"#ff0000",
+						"dos":"#00ff00",
+						"tres":"#0000ff",
+						"cuatro":"#ff00ff",
+						"cinco":"#ffff00",
+						"seis":"#00ffff"
+						};
+	
+		Renderer.SetContext(ctx);
+	
+		Spiders.AddObserver(new UIObserver(Renderer, cmap));
+		Spiders.AddObserver(new ScoreboardObserver(scoreboard, playerNames, cmap));
+		Spiders.AddObserver(new PlayerTurnObserver(players));
+
+		var vertices = GraphCreator.CreateVertices(249, 600, 600);
+      var edges = GraphCreator.Edgify(vertices);
+		Spiders.InitializeGame( vertices, edges );
+		Spiders.InitializePlayers( players );
+		setTimeout(function(){
+			Spiders.NotifyObserversEndOfTurn();
+		}, 1000);
+		
+
+		
+	</script>
+</body>
+</html>

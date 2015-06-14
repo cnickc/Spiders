@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="GraphCreator.js"></script>
+	<script type="text/javascript" src="Renderer.js"></script>
+	<script type="text/javascript" src="PlayerStructure.js"></script>
+	<script type="text/javascript" src="WebDataStructure.js"></script>
+	<script type="text/javascript" src="Spiders.js"></script>
+	<script type="text/javascript" src="Observers/ScoreboardObserver.js"></script>
+	<script type="text/javascript" src="Observers/UIObserver.js"></script>
+	<script type="text/javascript" src="Observers/PlayerTurnObserver.js"></script>
+	<script type="text/javascript" src="Observers/ContinuousPlayObserver.js"></script>
+</head>
+
+<body>
+	<canvas id="canvas" width="600" height="600" style="border:3px solid #000000;float:left;">
+	</canvas>
+	<div id="scoreboard" style="float:left;position:relative;"></div>
+
+	
+	<script type="text/javascript">
+
+      var canvas = document.getElementById("canvas"),
+          ctx = canvas.getContext("2d");
+      var scoreboard = document.getElementById("scoreboard");
+                  
+		var playerNames = ["Psyduck",
+						"Diglett",
+						"Wigglytuff",
+						"Wartortle",
+						"Tentacool",
+						"Geodude",
+						"Snorlax",
+						"Kingler",
+						"Gengar",
+						"Slowbro",
+						"Machamp",
+						"Bulbasaur"];
+		var players = [];
+		for( var i = 0; i < playerNames.length; i++ ) {
+			players.push( new Player( playerNames[i] ) );
+		}
+		var cmap = {"none":"#777777",
+						"Psyduck":"#FFFF00",
+						"Diglett":"#A52A2A",
+						"Wigglytuff":"#FF99AC",
+						"Wartortle":"#6464FF",
+						"Tentacool":"#00FFFF",
+						"Geodude":"#BB8855",
+						"Snorlax":"#656565",
+						"Kingler":"#FF0000",
+						"Gengar":"#882A88",
+						"Slowbro":"#FF00FF",
+						"Machamp":"#C8C8E0",
+						"Bulbasaur":"#64D364"
+						};
+	
+		Renderer.SetContext(ctx);
+	
+		Spiders.AddObserver(new UIObserver(Renderer, cmap));
+		Spiders.AddObserver(new ScoreboardObserver(scoreboard, playerNames, cmap));
+		Spiders.AddObserver(new PlayerTurnObserver(players));
+		Spiders.AddObserver(new ContinuousPlayObserver(GraphCreator));
+
+		var vertices = GraphCreator.CreateVertices(249, 600, 600);
+      var edges = GraphCreator.Edgify(vertices);
+		Spiders.InitializeGame( vertices, edges );
+		Spiders.InitializePlayers( players );
+		setTimeout(function(){
+			Spiders.NotifyObserversEndOfTurn();
+		}, 1000);
+		
+
+		
+	</script>
+</body>
+</html>

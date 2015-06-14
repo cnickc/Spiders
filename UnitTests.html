@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Spider Game QUnit Runner</title>
+<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.17.1.css">
+<style>
+	#blanket-main {font-size:12px !important;}
+</style>
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+<script src="http://code.jquery.com/qunit/qunit-1.17.1.js"></script>
+<script src="TestTools/blanket.js"></script>
+    <script src="Spiders.js" data-cover></script>
+    <script src="PlayerStructure.js" data-cover></script>
+    <script src="WebDataStructure.js" data-cover></script>
+<script src="TestTools/PlayerStructureTests.js"></script>
+<script src="TestTools/WebDataStructureTests.js"></script>
+<script src="TestTools/SpidersTests.js"></script>
+</body>
+</html>
