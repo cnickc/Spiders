@@ -15,9 +15,9 @@ onmessage = function ( ev ) {
 	}
 	
 	var i = findFirstEdgeOnNode( ev.data, curNode );
-	setTimeout( function() {
-		postMessage( { "EdgeIndex" : i } );	
-	}, 1);
+	
+	postMessage( { "EdgeIndex" : i } );	
+	
 };
 
 /*******************************************************************************
